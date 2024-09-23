@@ -1,6 +1,6 @@
 ---
 - name: Create user   #Name playbook
-  hosts: development   #Group of hosts
+  hosts: test-hosts   #Group of hosts
   tasks:
     - name: Create user ansible-fleks     #Name for task
       become: true     #Allow to use superuser mode

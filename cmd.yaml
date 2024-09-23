@@ -1,0 +1,8 @@
+---
+- name: Create user   #Name playbook
+  hosts: test-hosts   #Group of hosts
+  tasks:
+    - name: Do command from env_inv
+      become: true
+      ansible.builtin.shell: 
+        cmd: "{{ command }}"
