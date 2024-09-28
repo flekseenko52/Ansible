@@ -1,0 +1,29 @@
+    - name: Print a message before restarting the service
+      ansible.builtin.debug:       #вывод пользовательских сообщений
+        msg: "Restarting service: {{ service }}"
+
+    - name: Restart "{{ service }}"
+      ansible.builtin.service:      #Используется для управления сервисами (остановка, запуск, рестарт)
+        name: "{{ service }}"
+        state: restarted  
+    
+    - name: Add to line - "{{ string }}"     #Добавление строки в файл
+      ansible.builtin.lineinfile:        #Модуль для работы со строками в файлах
+        path: "{{ path_to_line }}"       #Путь к файлу
+        line: "{{ string }}"             #Строка
+        state: present                    #При данном параметре, строка добавится в конец файла (absent - удалить)
+
+    - name: Change line - "{{ changes_line }}" from "{{ path_to_changes_line }}"  #Редактирование уже существующей строки
+      ansible.builtin.lineinfile:
+        path: "{{ path_to_changes_line }}"
+        regexp: "{{ changes_line }}"    #Редактируемая строка
+        line: "{{ changed_line }}"      #Содержимое того, на что строка будет заменена
+
+    - name: Отображение блочных устройств  
+      command: lsblk                     #Команда, вывод которой будет записан в переменную ниже (register)
+      register: lsblk_output              #Сама переменная, её можно назвать как-угодно
+
+    - name: Вывод результата lsblk
+      debug:                             #Модуль для вывода команд, сообщений
+        var: lsblk_output.stdout_lines    #Переменная будет выведена из register, но обязательно добавляется stdout_lines    
+        

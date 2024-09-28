@@ -1,0 +1,16 @@
+---
+- name: Changes lines 
+  hosts: test-hosts
+  become: yes
+  tasks: 
+    - name: Add to line - "{{ string }}"     #Добавление строки в файл
+      ansible.builtin.lineinfile:        #Модуль для работы со строками в файлах
+        path: "{{ path_to_line }}"       #Путь к файлу
+        line: "{{ string }}"             #Строка
+        state: present                    #При данном параметре, строка добавится в конец файла (absent - удалить)
+
+    - name: Change line - "{{ changes_line }}" from "{{ path_to_changes_line }}"  #Редактирование уже существующей строки
+      ansible.builtin.lineinfile:
+        path: "{{ path_to_changes_line }}"
+        regexp: "{{ changes_line }}"    #Редактируемая строка
+        line: "{{ changed_line }}"      #Содержимое того, на что строка будет заменена
