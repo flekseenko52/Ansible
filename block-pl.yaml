@@ -1,0 +1,31 @@
+---
+- name: Blocks cfg
+  hosts: test-hosts
+  become: yes
+  gather_facts: false                                        #Не собирать информацию (факты) о хостах
+  tasks:
+    - name: Preconfig block
+#      when: ansible_facts['distribution'] == 'Ubuntu'       #Если дистрибутив Ubuntu, то выполнить блок ниже
+      block: 
+        - name: Install pakages
+          apt: 
+            name: "{{ pakages }}"
+            update-cache: yes
+        
+        - name: Useradd {{ nameuser }}
+          user: 
+            name: "{{ nameuser }}"
+            state: present
+      
+    - name: Checking block
+      block:
+        - name: Checking updates
+          ansible.builtin.shell:
+            cmd: cat /etc/passwd | grep {{ nameuser }}
+          register: var_out
+        - name: Echo updates
+          debug:
+            var: var_out.stdout_lines
+        - name: echo Process
+          debug:
+            msg: "Im install {{ pakages }}"
