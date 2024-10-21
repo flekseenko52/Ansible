@@ -1,21 +1,18 @@
 ---
-#- name: Настройка deploy 
-#  hosts: deploy
-#  become: yes
-#  gather_facts: yes
-#  roles:
-#    - preconfig
-
-- name: Настройка manager
-  hosts: manager
+- name: Configuration deploy
+  hosts: deploy
   become: yes
   gather_facts: yes
   roles:
-    - preconfig
+    - role: preconfig
+      tags: preconfig
+    - role: deploy
+      tags: deploy
 
-- name: Настройка worker 
+- name: Configuration workers
   hosts: worker
   become: yes
   gather_facts: yes
   roles:
-    - preconfig
+    - role: preconfig
+      tags: preconfig
