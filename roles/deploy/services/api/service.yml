@@ -8,10 +8,10 @@
     - name: "[{{ name }}] : Выкладка сервиса"
       community.docker.docker_swarm_service:
         name: "{{ name }}"
-        image: "localhost:5000/{{ name  }}:latest"
+        image: "{{ registry_name }}{{ name  }}:{{ version }}"
         state: present
         networks:
-          - name: "{{ networkName }}"
+          - name: "{{ network_name }}"
         publish:
           - mode: ingress
             protocol: tcp

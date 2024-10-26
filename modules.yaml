@@ -27,3 +27,25 @@
       debug:                             #Модуль для вывода команд, сообщений
         var: lsblk_output.stdout_lines    #Переменная будет выведена из register, но обязательно добавляется stdout_lines    
         
+    - name: Клонируем репозиторий
+      ansible.builtin.git:
+        repo: 'https://github.com/flekseenko52/Converter-demo.git'
+        dest: "{{ git_folder }}"
+        version: main
+
+    - name: Собираем image
+      community.docker.docker_image:
+        name: "{{ registry_name }}{{ item.name }}"
+        tag: "{{ item.version }}"
+        push: yes
+        build: 
+          path: "{{ git_folder }}"
+          dockerfile: "{{ git_folder }}/apps/{{ item.name }}/Dockerfile"
+        source: build 
+      
+    - name: Выкладка сервисов
+      include_tasks: "../services/{{ item.name }}/service.yml"
+      vars:
+        - name: "{{ item.name }}"
+        - version: "{{ item.version }}"
+      loop: "{{ services }}"

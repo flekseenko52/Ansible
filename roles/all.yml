@@ -8,6 +8,16 @@
       tags: preconfig
     - role: deploy
       tags: deploy
+    - role: build
+      tags: build
+
+- name: Configuration manager
+  hosts: manager
+  become: yes
+  gather_facts: yes
+  roles:
+    - role: preconfig
+      tags: preconfig
 
 - name: Configuration workers
   hosts: worker
