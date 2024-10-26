@@ -1,5 +1,6 @@
 ---
 registry_name: "localhost:5000/"
+
 rmq_defaults:
   - name: AMQP_EXCHANGE
     value: xchg_integrations
@@ -13,13 +14,17 @@ rmq_defaults:
 services:
   - name: api
     version: latest
-  # - name: app
-  #   version: latest
-  # - name: converter
-  #   version: latest
-  - name: rmq
+  - name: app
     version: latest
+  - name: converter
+    version: latest
+  - name: rmq
+    version: 3-management
 
 non_build_services:
  - name: rmq
-   version: latest
+   version: 3-management
+
+configs:
+  converter:
+    queue: q_imageProcessor
