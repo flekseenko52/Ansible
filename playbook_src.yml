@@ -1,0 +1,19 @@
+---
+- name: Развертывание архивов
+  hosts: all
+  tasks:
+    - name: Копирование архива с kesl на хост
+      ansible.builtin.copy:
+        src: "/home/flekseenko/Testing_Instruments/ansible-demo/task_fill/Folder-c.zip"
+        dest: "/tmp/"
+
+    - name: Разархивация архива kesl 
+      ansible.builtin.unarchive:
+        src:  "/tmp/Folder-c.zip"
+        dest: "/tmp/"
+        remote_src: yes
+
+    - name: Удаление архива
+      ansible.builtin.file:
+        path: "/tmp/Folder-c.zip"
+        state: absent
