@@ -1,0 +1,7 @@
+[nginx-proxy]
+62.109.21.96
+[all:vars]
+ansible_user=root
+ansible_password="{{ root_password }}"
+ansible_become_password="{{ root_password }}"
+ansible_ssh_port=22

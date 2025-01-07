@@ -1,0 +1,20 @@
+---
+- name: Check Certs on proxy
+  stat:
+    path: /etc/letsencrypt/live/{{ domain }}/fullchain.pem
+  register: cert_exists
+
+- name: Output of cert
+  ansible.builtin.debug:
+    var: cert_exists
+
+- name: Creating SSL-Certs
+  command: certbot --nginx -d {{ domain }} --agree-tos --email {{ email }} --non-interactive
+  when: not cert_exists.stat.exists
+  register: certbot_output
+  changed_when: "'Congratulations!' in certbot_output.stdout"
+
+- name: Creating user
+  ansible.builtin.user:
+    name: flensible
+    shell: /bin/bash

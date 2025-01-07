@@ -1,0 +1,37 @@
+---
+- name: Update pakages
+  ansible.builtin.apt:
+    upgrade: true
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Install pakages
+  ansible.builtin.apt:
+    name: "{{ pakages }}"
+    update_cache: true
+
+- name: Deleting default config in "{{ nginx_available_dir}}"
+  ansible.builtin.file:
+    state: absent
+    path: "{{ nginx_available_dir }}/default"
+
+- name: Deleting default config in "{{ nginx_enable_dir}}"
+  ansible.builtin.file:
+    state: absent
+    path: "{{ nginx_enable_dir }}/default"
+
+- name: Copy Configuration
+  ansible.builtin.copy:
+    src: "{{ conf_src_dir }}"
+    dest: "{{ nginx_available_dir }}"
+
+- name: Copy web-content
+  ansible.builtin.copy:
+    src: "{{ html_src_dir  }}"
+    dest: "{{ html_dest_dir }}"
+
+- name: Create symbolic link
+  file:
+    src: "{{ nginx_available_dir }}/{{ domain }}"
+    dest: "{{nginx_enable_dir}}/{{ domain }}"
+    state: link

@@ -1,0 +1,10 @@
+---
+- name: Configuration proxy
+  hosts: nginx-proxy
+  become: yes
+  vars_files:
+    - vault_pass.yaml
+  gather_facts: false
+  roles:
+    - preconfig
+    - ssl_install 
