@@ -1,0 +1,14 @@
+---
+- name: Configuration nginx-proxy
+  hosts: nginx-proxy
+  become: true
+  vars:
+    nginx_copy: false
+    ssl_install: false
+    pass_change: false
+  gather_facts: false
+  roles:
+    - role: nginx
+      tags: nginx
+    - role: user
+      tags: user

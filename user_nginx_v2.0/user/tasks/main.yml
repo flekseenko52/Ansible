@@ -1,0 +1,33 @@
+---
+- name: Include password variables
+  include_vars: vars/pass.yaml
+
+- name: Creating user "{{ item.name }}"
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    comment: System user
+    groups: sudo
+    create_home: true
+    shell: /bin/bash
+  with_items: "{{ users }}"
+
+- name: Change password
+  ansible.builtin.user:
+    user: "{{ item.name }}"
+    password: "{{ item.password | password_hash('sha512') }}"
+  when: pass_change | bool
+  with_items: "{{ users }}"
+  
+- name: Copy ssh-key
+  ansible.posix.authorized_key:
+    user: "{{ item.name }}"
+    state: present
+    key: "{{ lookup('file', item.sshkey )}}" 
+  with_items: "{{ users }}"
+
+- name: Allow starting commands without password to user "{{ item.name }}"
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    state: present
+    line: '"{{ item.name }}"  ALL=(ALL) NOPASSWD: "{{ item.shell }}"'
+  with_items: "{{ users }}"

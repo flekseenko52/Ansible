@@ -1,0 +1,6 @@
+conf_src_dir: files/849036315-students.devboxops.xyz-default.conf
+html_src_dir: files/index.html
+html_dest_dir: /usr/share/nginx/html
+domain_conf: 849036315-students.devboxops.xyz-default.conf
+domain: 849036315-students.devboxops.xyz
+email: amv@gmail.com

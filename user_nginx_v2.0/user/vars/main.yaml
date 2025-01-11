@@ -1,0 +1,11 @@
+users:
+  - name: dev-user
+    password: "{{ first_pass }}"
+    shell: /usr/bin/systemctl start systemd-journald, /usr/bin/systemctl stop systemd-journald
+    sshkey: /home/flekseenko/.ssh/id_ed25519.pub
+
+  - name: prod-user
+    password: "{{ second_pass }}"
+    shell: /usr/bin/systemctl start rsyslog, /usr/bin/systemctl stop rsyslog
+    sshkey: /home/flekseenko/.ssh/id_ed25519.pub
+
