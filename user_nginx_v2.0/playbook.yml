@@ -2,6 +2,8 @@
 - name: Configuration nginx-proxy
   hosts: nginx-proxy
   become: true
+  vars_files:
+    - user/vars/pass.yaml
   vars:
     nginx_copy: false
     ssl_install: false
